@@ -35,19 +35,13 @@ model_config = dict(
     )
 )
 
-sche_config = dict(
-    beta_min=0.1,
-    beta_max=20,
-    num_infer_step=1000
-)
-
-
+train_data = 'flower'
 train_data_config = dict(
     DEBUG = DEBUG,
     img_size=128,
     normalize_config=dict(
-        mean=(0.0, ),
-        std=(1.0, )
+        mean=(0.5, ),
+        std=(0.5, )
     ),
     img_root='/root/autodl-tmp/ox-flowers-jpg',
     train_dataloader_config=dict(batch_size=32,
@@ -56,22 +50,32 @@ train_data_config = dict(
 )
 
 
+resume_ckpt_path = None # only load model weight from ckp
+load_weight_from = None # resume all trainer state
+
+# ckp
 ckp_config = dict(
    save_last=True, 
-   every_n_epochs=num_ep//5
+   every_n_epochs=None
 )
 
+# trainer config
 trainer_config = dict(
     log_every_n_steps=5,
     precision='16-mixed',
-    val_check_interval=None,
-    resume_ckpt_path = None
+    val_check_interval=1
 )
-
+# EMA support
+use_ema = True
+ema_config = dict(
+    ema_start_epoch = 0,
+    ema_decay = 0.999
+)
 # LOGGING
 enable_wandb = True
 wandb_config = dict(
     project='diffusion',
     offline=True if DEBUG == True else False
 )
+
 ckp_root = f'[{wandb_config["project"]}]'
