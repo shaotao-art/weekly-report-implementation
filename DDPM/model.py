@@ -1,7 +1,7 @@
 import torch 
 from torch import nn
 from diffusers import UNet2DModel
-from dpm_sche import DPMSche
+from ddim_sche import DDIMSche
 
 
 class DDPM(nn.Module):
@@ -9,7 +9,7 @@ class DDPM(nn.Module):
         super().__init__()
         self.config = config
         self.model = UNet2DModel(**config.model_config)
-        self.sche = DPMSche(**config.sche_config)
+        self.sche = DDIMSche(**config.sche_config)
         self.loss_fn = nn.MSELoss()
   
         
